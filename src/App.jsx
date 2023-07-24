@@ -25,7 +25,7 @@ export default function App() {
           {
             temp.push(<Pokecard number={i}/>)
           }
-          setP([pokemons, temp]);
+          setP((prev) => [...prev, ...temp]);
           num += 21
         }
       },
