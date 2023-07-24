@@ -5,13 +5,17 @@ import Pokecard from './components/Pokecard'
 import useSWR from 'swr'
 
 export default function App() {
+  let pokemons = []
+  for (let i = 1; i < 21; i++)
+  {
+    pokemons.push(<Pokecard number={i}/>)
+  }
+
   return (
       <div className="w-screen h-screen">
         <Navbar/>
-        <div className='grid grid-cols-2'>
-          <Pokecard sprite={'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/dream-world/1.svg'} name="Bulbasaur" number={2}></Pokecard>
-          <Pokecard sprite={'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/1.png'} name="Bulbasaur" number={2}></Pokecard>
-
+        <div className='grid grid-cols-2 gap-2 ml-2 mr-2'>
+          {pokemons}
         </div>
       </div>
   )
