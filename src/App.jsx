@@ -2,7 +2,6 @@ import { useState, useCallback, useRef, useEffect } from 'react'
 import './App.css'
 import Navbar from './components/Navbar'
 import Pokecard from './components/Pokecard'
-import { useBottomScrollListener } from 'react-bottom-scroll-listener';
 
 export default function App() {
   let num = 21
