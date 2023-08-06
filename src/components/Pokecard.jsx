@@ -1,6 +1,6 @@
-import { useState } from 'react'
 import useSWR, { SWRConfig } from 'swr'
-// import axios from 'axios'
+import { Link } from "react-router-dom"
+
 
 function formattedPokeType(type)
 {
@@ -78,26 +78,28 @@ function localStorageProvider() {
     return map
   }
 
-export default function Pokecard({sprite, name, number, gen}) {
+export default function Pokecard({number}) {
     
     const fetcher = (url) => fetch(url).then(res => res.json())
     const { data, error, isLoading } = useSWR(`https://pokeapi.co/api/v2/pokemon/${number}`, fetcher)
+    const pokeLink = `pokemon\${number}`
     if (!isLoading && !error)
     {
         return (
         <SWRConfig value={{ provider: localStorageProvider }}>
-            <div className="flex flex-col items-center bg-slate-50 border border-grey-500 pb-2">
-                <img 
-                    className="mt-6 w-20 h-20" 
-                    src={data.sprites.other.dream_world.front_default ? data.sprites.other.dream_world.front_default: data.sprites.front_default}
-                />
-                <h2 className='text-3xl'>#{number}</h2>
-                <h1 className="capitalize text-3xl font-bold">{data.name}</h1>
-                <div className="flex justify-start w-full gap-2 ml-2">
-                    {data.types.map(i => formattedPokeType(i.type.name))}
+            <Link to={`pokemon\\${number}`}>
+                <div className="flex flex-col items-center bg-slate-50 border border-grey-500 pb-2">
+                    <img
+                        className="mt-6 w-20 h-20"
+                        src={data.sprites.other.dream_world.front_default ? data.sprites.other.dream_world.front_default: data.sprites.front_default}
+                    />
+                    <h2 className='text-3xl'>#{number}</h2>
+                    <h1 className="capitalize text-3xl font-bold">{data.name}</h1>
+                    <div className="flex justify-start w-full gap-2 ml-2">
+                        {data.types.map(i => formattedPokeType(i.type.name))}
+                    </div>
                 </div>
-
-            </div>
+            </Link>
         </SWRConfig>
 
         );
