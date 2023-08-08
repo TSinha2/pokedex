@@ -1,7 +1,6 @@
 import useSWR, { SWRConfig } from 'swr'
 import { Link } from "react-router-dom"
 
-
 function formattedPokeType(type)
 {
     switch(type)
@@ -98,6 +97,7 @@ export default function Pokecard({number}) {
                     <div className="flex justify-start w-full gap-2 ml-2">
                         {data.types.map(i => formattedPokeType(i.type.name))}
                     </div>
+                    <h1> {data.weight} </h1>
                 </div>
             </Link>
         </SWRConfig>
