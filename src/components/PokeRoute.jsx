@@ -18,12 +18,12 @@ function MiscData(id)
 function DataTable(props)
 {
   return(
-    <table className="width-screen	border-spacing-x-5	">
+    <table className="width-screen	border-spacing-y-12	">
       <tbody>
         {props.data.map(
           i => <tr>
-            <th>{i[0]}</th>
-            <td>{i[1]}</td>
+            <th className="pr-4 text-lg">{i[0]}</th>
+            <td className="pl-8 text-lg">{i[1]}</td>
           </tr>
         )}
       </tbody>
@@ -132,14 +132,15 @@ export default function PokeRoute()
                     </div>
 
                    <h1 className="text-5xl capitalize">{data.name}</h1>
-                   <h1 className="text-1xl text-center">{!miscLoading ? user.flavor_text_entries[3].flavor_text: ''}</h1>
-                   <h1 className="text-2xl">Weight: {data.weight / 10}kg ({((data.weight / 10) * 2.2).toFixed(1)} lbs)</h1>
-                   <h1 className="text-2xl">Height: {data.height / 10}m ({((data.height / 10) * 3.281).toFixed(1)} ft)</h1>
-                   <h1 className="text-2xl">{!miscLoading ? user.color.name: ''}</h1>
-                   {/* <h1 className="text-2xl">{user.shape.name}</h1>
-                   <h1 className="text-2xl">{user.generation.name}</h1> */}
-                   <h1 className="text-2xl">{data.abilities.map(i => i.ability.name) }</h1>
-                   <DataTable data={[['Weight',2], ['Height', 3]]}/>
+                   <h1 className="text-xl text-center">{!miscLoading ? user.flavor_text_entries[3].flavor_text: ''}</h1>
+                   {/* <h1 className="text-2xl">{data.abilities.map(i => i.ability.name) }</h1> */}
+                   <DataTable data={[ ['Pokédex №',  `${data.id}`],
+                                     ['Weight', `${data.weight / 10}kg (${((data.weight / 10) * 2.2).toFixed(1)} lbs)`] , 
+                                     ['Height', `${data.height / 10}m (${((data.height / 10) * 3.281).toFixed(1)} ft)`],
+                                     ['Color', `${!miscLoading ? user.color.name[0].toUpperCase() + user.color.name.slice(1): ''}`],
+                                     ['Shape', `${!miscLoading ? user.shape.name[0].toUpperCase() + user.shape.name.slice(1): ''}`],
+                                     ['Generation Introduced', `${!miscLoading ? user.generation.name.split('-')[0][0].toUpperCase() + user.generation.name.split('-')[0].slice(1) + ' ' +  user.generation.name.split('-')[1].toUpperCase(): ''}`]                                     
+                                      ]}/>
 
          </div>
       </SWRConfig>
