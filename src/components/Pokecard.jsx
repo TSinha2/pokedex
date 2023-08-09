@@ -97,7 +97,6 @@ export default function Pokecard({number}) {
                     <div className="flex justify-start w-full gap-2 ml-2">
                         {data.types.map(i => formattedPokeType(i.type.name))}
                     </div>
-                    <h1> {data.weight} </h1>
                 </div>
             </Link>
         </SWRConfig>
