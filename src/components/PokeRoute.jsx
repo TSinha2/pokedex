@@ -1,3 +1,4 @@
+import { data } from "autoprefixer";
 import {  useParams } from "react-router-dom"
 import useSWR, { SWRConfig } from 'swr'
 import Navbar from "./Navbar"
@@ -15,15 +16,18 @@ function MiscData(id)
   }
 }
 
+
+
+
 function DataTable(props)
 {
   return(
-    <table className="width-screen	border-spacing-y-12	">
+    <table className="width-screen ">
       <tbody>
         {props.data.map(
-          i => <tr>
-            <th className="pr-4 text-lg">{i[0]}</th>
-            <td className="pl-8 text-lg">{i[1]}</td>
+          i => <tr className="border first:border-t-0 last:border-b-0 border-x-0 ">
+            <th key={i[0]} className="text-xl px-12 pb-4 ">{i[0]}</th>
+            <td key={i[1]} className="text-xl px-12 pb-4">{i[1]}</td>
           </tr>
         )}
       </tbody>
@@ -114,9 +118,8 @@ export default function PokeRoute()
   const fetcher = (url) => fetch(url).then(res => res.json())
   const { data, error, isLoading } = useSWR(`https://pokeapi.co/api/v2/pokemon/${id}`, fetcher)
   let {user, miscLoading} = MiscData(id)
-  console.log(user)
   console.log(data)
-
+  getAbilities(data.abilities)
   if (!isLoading && !error)
   {
     return (
@@ -134,12 +137,12 @@ export default function PokeRoute()
                    <h1 className="text-5xl capitalize">{data.name}</h1>
                    <h1 className="text-xl text-center">{!miscLoading ? user.flavor_text_entries[3].flavor_text: ''}</h1>
                    {/* <h1 className="text-2xl">{data.abilities.map(i => i.ability.name) }</h1> */}
-                   <DataTable data={[ ['Pokédex №',  `${data.id}`],
+                   <DataTable data={[ ['Pokédex №',  `#${data.id}`],
+                                     ['Introduced', `${!miscLoading ? user.generation.name.split('-')[0][0].toUpperCase() + user.generation.name.split('-')[0].slice(1) + ' ' +  user.generation.name.split('-')[1].toUpperCase(): ''}`],
                                      ['Weight', `${data.weight / 10}kg (${((data.weight / 10) * 2.2).toFixed(1)} lbs)`] , 
                                      ['Height', `${data.height / 10}m (${((data.height / 10) * 3.281).toFixed(1)} ft)`],
                                      ['Color', `${!miscLoading ? user.color.name[0].toUpperCase() + user.color.name.slice(1): ''}`],
-                                     ['Shape', `${!miscLoading ? user.shape.name[0].toUpperCase() + user.shape.name.slice(1): ''}`],
-                                     ['Generation Introduced', `${!miscLoading ? user.generation.name.split('-')[0][0].toUpperCase() + user.generation.name.split('-')[0].slice(1) + ' ' +  user.generation.name.split('-')[1].toUpperCase(): ''}`]                                     
+                                     ['Shape', `${!miscLoading ? user.shape.name[0].toUpperCase() + user.shape.name.slice(1): ''}`]
                                       ]}/>
 
          </div>
