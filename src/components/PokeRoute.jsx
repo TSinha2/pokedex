@@ -119,7 +119,7 @@ export default function PokeRoute()
   const { data, error, isLoading } = useSWR(`https://pokeapi.co/api/v2/pokemon/${id}`, fetcher)
   let {user, miscLoading} = MiscData(id)
   console.log(data)
-  getAbilities(data.abilities)
+  // getAbilities(data.abilities)
   if (!isLoading && !error)
   {
     return (
