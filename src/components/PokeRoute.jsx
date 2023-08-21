@@ -16,7 +16,15 @@ function MiscData(id)
   }
 }
 
+function Data(id)
+{
+  const fetcher = (url) => fetch(url).then(res => res.json())
+  const { data, error, isLoading } = useSWR(`https://pokeapi.co/api/v2/pokemon/${id}`, fetcher)
+  // const { data: abs } = useSWR(data ? data.abilities[0].ability.url : null, fetcher)
+  // if (data && abs) return { data, error, isLoading, abs}
+  return { data, error, isLoading }
 
+}
 
 
 function DataTable(props)
@@ -116,7 +124,7 @@ export default function PokeRoute()
 {
   const { id } = useParams()
   const fetcher = (url) => fetch(url).then(res => res.json())
-  const { data, error, isLoading } = useSWR(`https://pokeapi.co/api/v2/pokemon/${id}`, fetcher)
+  const { data, error, isLoading } = Data(id)
   let {user, miscLoading} = MiscData(id)
   console.log(data)
   console.log(user)
@@ -143,7 +151,8 @@ export default function PokeRoute()
                                      ['Weight', `${data.weight / 10}kg (${((data.weight / 10) * 2.2).toFixed(1)} lbs)`] , 
                                      ['Height', `${data.height / 10}m (${((data.height / 10) * 3.281).toFixed(1)} ft)`],
                                      ['Color', `${!miscLoading ? user.color.name[0].toUpperCase() + user.color.name.slice(1): ''}`],
-                                     ['Shape', `${user.shape ? user.shape.name[0].toUpperCase() + user.shape.name.slice(1): ''}`]
+                                     ['Shape', `${user.shape ? user.shape.name[0].toUpperCase() + user.shape.name.slice(1): ''}`],
+
                                       ]}/>
 
          </div>
