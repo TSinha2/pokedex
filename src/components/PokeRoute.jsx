@@ -121,7 +121,7 @@ export default function PokeRoute()
   console.log(data)
   console.log(user)
   // getAbilities(data.abilities)
-  if (!isLoading && !error)
+  if (data && user)
   {
     return (
       <SWRConfig value={{ provider: localStorageProvider }}>
