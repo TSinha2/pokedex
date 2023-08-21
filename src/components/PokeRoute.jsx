@@ -119,6 +119,7 @@ export default function PokeRoute()
   const { data, error, isLoading } = useSWR(`https://pokeapi.co/api/v2/pokemon/${id}`, fetcher)
   let {user, miscLoading} = MiscData(id)
   console.log(data)
+  console.log(user)
   // getAbilities(data.abilities)
   if (!isLoading && !error)
   {
@@ -135,14 +136,14 @@ export default function PokeRoute()
                     </div>
 
                    <h1 className="text-5xl capitalize">{data.name}</h1>
-                   <h1 className="text-xl text-center">{!miscLoading ? user.flavor_text_entries[3].flavor_text: ''}</h1>
+                   <h1 className="text-xl text-center">{!miscLoading ? user.flavor_text_entries[0].flavor_text: ''}</h1>
                    {/* <h1 className="text-2xl">{data.abilities.map(i => i.ability.name) }</h1> */}
                    <DataTable data={[ ['Pokédex №',  `#${data.id}`],
                                      ['Introduced', `${!miscLoading ? user.generation.name.split('-')[0][0].toUpperCase() + user.generation.name.split('-')[0].slice(1) + ' ' +  user.generation.name.split('-')[1].toUpperCase(): ''}`],
                                      ['Weight', `${data.weight / 10}kg (${((data.weight / 10) * 2.2).toFixed(1)} lbs)`] , 
                                      ['Height', `${data.height / 10}m (${((data.height / 10) * 3.281).toFixed(1)} ft)`],
                                      ['Color', `${!miscLoading ? user.color.name[0].toUpperCase() + user.color.name.slice(1): ''}`],
-                                     ['Shape', `${!miscLoading ? user.shape.name[0].toUpperCase() + user.shape.name.slice(1): ''}`]
+                                     ['Shape', `${user.shape ? user.shape.name[0].toUpperCase() + user.shape.name.slice(1): ''}`]
                                       ]}/>
 
          </div>
