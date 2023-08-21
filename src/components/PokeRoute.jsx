@@ -20,10 +20,9 @@ function Data(id)
 {
   const fetcher = (url) => fetch(url).then(res => res.json())
   const { data, error, isLoading } = useSWR(`https://pokeapi.co/api/v2/pokemon/${id}`, fetcher)
-  // const { data: abs } = useSWR(data ? data.abilities[0].ability.url : null, fetcher)
+  let { data: abs } = useSWR(data ? data.abilities[0].ability.url : null, fetcher)
   // if (data && abs) return { data, error, isLoading, abs}
-  return { data, error, isLoading }
-
+  return { data, error, isLoading, abs }
 }
 
 
@@ -42,6 +41,7 @@ function DataTable(props)
     </table>
   )
 }
+
 
 function formattedPokeType(type)
 {
@@ -124,12 +124,13 @@ export default function PokeRoute()
 {
   const { id } = useParams()
   const fetcher = (url) => fetch(url).then(res => res.json())
-  const { data, error, isLoading } = Data(id)
+  const { data, error, isLoading, abs } = Data(id)
   let {user, miscLoading} = MiscData(id)
   console.log(data)
   console.log(user)
+  console.log(abs)
   // getAbilities(data.abilities)
-  if (data && user)
+  if (data && user && abs)
   {
     return (
       <SWRConfig value={{ provider: localStorageProvider }}>
@@ -152,7 +153,7 @@ export default function PokeRoute()
                                      ['Height', `${data.height / 10}m (${((data.height / 10) * 3.281).toFixed(1)} ft)`],
                                      ['Color', `${!miscLoading ? user.color.name[0].toUpperCase() + user.color.name.slice(1): ''}`],
                                      ['Shape', `${user.shape ? user.shape.name[0].toUpperCase() + user.shape.name.slice(1): ''}`],
-
+                                     ['Abilities', `${abs.flavor_text_entries? abs.flavor_text_entries[0].flavor_text: ''}`],
                                       ]}/>
 
          </div>
