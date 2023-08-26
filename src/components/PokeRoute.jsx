@@ -20,14 +20,34 @@ function Data(id)
 {
   const fetcher = (url) => fetch(url).then(res => res.json())
   const { data, error, isLoading } = useSWR(`https://pokeapi.co/api/v2/pokemon/${id}`, fetcher)
-  let { data: abs } = useSWR( (data && data.abilities.length > 1) ? data.abilities[0].ability.url : null, fetcher)
-  let { data: abs_b } = useSWR( (data && data.abilities.length > 2) ? data.abilities[1].ability.url : null, fetcher)
-  let { data: abs_c } = useSWR( (data && data.abilities.length > 3) ? data.abilities[2].ability.url : null, fetcher)
-  console.log(abs)
-  console.log(abs_b)
-  console.log(abs_c)
+  const abilities = []
+  let { data: abs } = useSWR( (data && data.abilities.length > 0) ? data.abilities[0].ability.url : null, fetcher)
+  let { data: abs_b } = useSWR( (data && data.abilities.length > 1) ? data.abilities[1].ability.url : null, fetcher)
+  let { data: abs_c } = useSWR( (data && data.abilities.length > 2) ? data.abilities[2].ability.url : null, fetcher)
+  // console.log(abs)
+  // console.log(abs_b)
+  // console.log(abs_c)
+  abilities.push(abs, abs_b, abs_c)
+  console.log(abilities)
   // if (data && abs) return { data, error, isLoading, abs}
-  return { data, error, isLoading, abs }
+  return { data, error, isLoading, abs, abilities }
+}
+
+function AbilitiesProcess(abilitiesList)
+{
+  const processedAbilities = abilitiesList.map(i => 
+    {
+      console.log(i)
+      if (i)
+      {
+        return(
+        <div>
+          <h1 className="font-bold">{i.name}</h1>
+          <p>{i.flavor_text_entries[0].flavor_text}</p>
+        </div>)
+      }
+    })
+    return processedAbilities;
 }
 
 
@@ -129,13 +149,13 @@ export default function PokeRoute()
 {
   const { id } = useParams()
   const fetcher = (url) => fetch(url).then(res => res.json())
-  const { data, error, isLoading, abs } = Data(id)
+  const { data, error, isLoading, abs, abilities } = Data(id)
   let {user, miscLoading} = MiscData(id)
   console.log(data)
   console.log(user)
   console.log(abs)
   // getAbilities(data.abilities)
-  if (data && user && abs)
+  if (data && user && abilities)
   {
     return (
       <SWRConfig value={{ provider: localStorageProvider }}>
@@ -158,7 +178,8 @@ export default function PokeRoute()
                                      ['Height', `${data.height / 10}m (${((data.height / 10) * 3.281).toFixed(1)} ft)`],
                                      ['Color', `${!miscLoading ? user.color.name[0].toUpperCase() + user.color.name.slice(1): ''}`],
                                      ['Shape', `${user.shape ? user.shape.name[0].toUpperCase() + user.shape.name.slice(1): ''}`],
-                                     ['Abilities', `${abs.flavor_text_entries? abs.flavor_text_entries[0].flavor_text: ''}`],
+                                    //  ['Abilities', `${abs.flavor_text_entries? abs.flavor_text_entries[0].flavor_text: ''}`],
+                                      ['Test', AbilitiesProcess(abilities)]
                                       ]}/>
 
          </div>
