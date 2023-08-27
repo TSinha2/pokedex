@@ -33,18 +33,37 @@ function Data(id)
   return { data, error, isLoading, abs, abilities }
 }
 
+function capitalizeWord(word) {
+  return word.charAt(0).toUpperCase() + word.slice(1);
+}
+
 function AbilitiesProcess(abilitiesList)
 {
   const processedAbilities = abilitiesList.map(i => 
     {
-      console.log(i)
       if (i)
       {
+        // Procesing of the text
+        // Capitalize name of ability 
+        const name = i.name.split("-").map(i => capitalizeWord(i)).join(" ")
+
+        let flavorText = ''
+        // Chose English desc. of name
+        for (let j of i.flavor_text_entries)
+        {
+          if (j.language.name == 'en')
+          {
+            flavorText = j.flavor_text;
+            break;
+          }
+        }
+
         return(
         <div>
-          <h1 className="font-bold">{i.name}</h1>
-          <p>{i.flavor_text_entries[0].flavor_text}</p>
+          <h1 className="font-bold">{name}</h1>
+          <p>{flavorText}</p>
         </div>)
+
       }
     })
     return processedAbilities;
@@ -144,6 +163,22 @@ function localStorageProvider() {
   return map
 }
 
+function StatsTable(props)
+{
+  return(
+        <table className="">
+          <tbody>
+            {props.stats.map(
+              i => <tr className="border first:border-t-0 last:border-b-0 border-x-0 ">
+                <th className="text-xl px-12 pb-4 capitalize text-left">{i.stat.name.split('-').join(' ')}</th>
+                <td className="text-xl px-12 pb-4">{i.base_stat}</td>
+              </tr>
+            )}
+          </tbody>
+        </table>
+  )
+
+}
 
 export default function PokeRoute()
 {
@@ -162,7 +197,7 @@ export default function PokeRoute()
          <Navbar/> 
          <div className="flex flex-col items-center	gap-2">
            <img
-              className="mt-6 w-60 h-60"
+              className="mt-6 w-80 h-80"
               src={data.sprites.other.dream_world.front_default ? data.sprites.other.dream_world.front_default: data.sprites.front_default}
               /> 
                     <div className="flex gap-2 ml-2">
@@ -172,16 +207,20 @@ export default function PokeRoute()
                    <h1 className="text-5xl capitalize">{data.name}</h1>
                    <h1 className="text-xl text-center">{!miscLoading ? user.flavor_text_entries[0].flavor_text: ''}</h1>
                    {/* <h1 className="text-2xl">{data.abilities.map(i => i.ability.name) }</h1> */}
-                   <DataTable data={[ ['Pokédex №',  `#${data.id}`],
-                                     ['Introduced', `${!miscLoading ? user.generation.name.split('-')[0][0].toUpperCase() + user.generation.name.split('-')[0].slice(1) + ' ' +  user.generation.name.split('-')[1].toUpperCase(): ''}`],
+                   <DataTable data={[['Pokédex №',  `#${data.id}`],
+                                     ['Introduced', `${!miscLoading ? capitalizeWord(user.generation.name.split('-')[0]) + ' ' +  user.generation.name.split('-')[1].toUpperCase(): ''}`],
                                      ['Weight', `${data.weight / 10}kg (${((data.weight / 10) * 2.2).toFixed(1)} lbs)`] , 
                                      ['Height', `${data.height / 10}m (${((data.height / 10) * 3.281).toFixed(1)} ft)`],
-                                     ['Color', `${!miscLoading ? user.color.name[0].toUpperCase() + user.color.name.slice(1): ''}`],
-                                     ['Shape', `${user.shape ? user.shape.name[0].toUpperCase() + user.shape.name.slice(1): ''}`],
-                                    //  ['Abilities', `${abs.flavor_text_entries? abs.flavor_text_entries[0].flavor_text: ''}`],
-                                      ['Test', AbilitiesProcess(abilities)]
+                                     ['Color', `${!miscLoading ? capitalizeWord(user.color.name): ''}`],
+                                     ['Shape', `${user.shape ? capitalizeWord(user.shape.name): ''}`],
+                                     ['Abilities', AbilitiesProcess(abilities)]
                                       ]}/>
 
+         </div>
+         <hr className="border-2 border-black"/>
+         <div className="flex flex-col">
+           <h1 className="text-3xl capitalize mx-12 my-4">Base Stats</h1>
+            <StatsTable stats={data.stats}/>
          </div>
       </SWRConfig>
     )
