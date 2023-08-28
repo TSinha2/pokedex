@@ -77,7 +77,7 @@ function DataTable(props)
       <tbody>
         {props.data.map(
           i => <tr className="border first:border-t-0 last:border-b-0 border-x-0 ">
-            <th key={i[0]} className="text-xl px-12 pb-4 ">{i[0]}</th>
+            <th key={i[0]} className="text-xl px-12 pb-4 text-left">{i[0]}</th>
             <td key={i[1]} className="text-xl px-12 pb-4">{i[1]}</td>
           </tr>
         )}
@@ -218,9 +218,30 @@ export default function PokeRoute()
 
          </div>
          <hr className="border-2 border-black"/>
+
          <div className="flex flex-col">
            <h1 className="text-3xl capitalize mx-12 my-4">Base Stats</h1>
             <StatsTable stats={data.stats}/>
+         </div>
+
+         <div className="flex flex-col">
+           <h1 className="text-3xl capitalize mx-12 my-4">Training</h1>
+           <DataTable data={[
+                                     ['Catch Rate', `${user.capture_rate}`] , 
+                                     ['Base Happiness', `${user.base_happiness >= 70 ? `${user.base_happiness} (High)` : `${user.base_happiness} (Low)`}`],
+                                     ['Base XP', `${data.base_experience}`],
+                                     ['EV Yield', data.stats.map(i=> i.effort > 0 ? <p>{i.effort} {i.stat.name.split('-').map(j => capitalizeWord(j)).join(' ')} </p> : '') ] , 
+                                      ]}/>
+         </div>
+
+         <div className="flex flex-col">
+           <h1 className="text-3xl capitalize mx-12 my-4">Breeding</h1>
+           <DataTable data={[
+                                     ['Growth Rate', user.growth_rate.name.split("-").map(i => capitalizeWord(i)).join(' ')] , 
+                                     ['Egg Groups', <ol className="list-disc">{user.egg_groups.map(i => <li>{capitalizeWord(i.name)}</li> )}</ol>],
+                                     ['Egg Cycles', `${user.hatch_counter} cycles (${(user.hatch_counter + 1) * 255} steps)`],
+                                     ['Habitat', capitalizeWord(user.habitat.name) ] , 
+                                      ]}/>
          </div>
       </SWRConfig>
     )
