@@ -203,7 +203,7 @@ export default function PokeRoute()
                     <div className="md:col-start-1 md:row-start-1 md:my-4 md:ml-4">
                       
                                          <h1 className="text-6xl capitalize text-center">{data.name}</h1>
-                                         <div className="flex gap-2 ml-2 justify-center	">
+                                         <div className="flex gap-2 ml-2 justify-center	my-2">
                           {data.types.map(i => formattedPokeType(i.type.name))}
                       </div>
 
