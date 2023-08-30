@@ -48,7 +48,7 @@ export default function Home()
   return(
   <div>
     <Navbar/>
-    <div  className='grid grid-cols-2 gap-2 ml-2 mr-2 md:grid-cols-6'>
+    <div  className='grid grid-cols-2 gap-2 ml-2 mr-2 md:grid-cols-4 lg:grid-cols-6 xl:grid-cols-8'>
       {p}
     </div>
     <div ref={observerTarget}></div>
