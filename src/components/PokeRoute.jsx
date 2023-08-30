@@ -188,7 +188,6 @@ export default function PokeRoute()
   let {user, miscLoading} = MiscData(id)
   console.log(data)
   console.log(user)
-  console.log(abs)
   // getAbilities(data.abilities)
   if (data && user && abilities)
   {
@@ -242,7 +241,7 @@ export default function PokeRoute()
                                        ['Growth Rate', user.growth_rate.name.split("-").map(i => capitalizeWord(i)).join(' ')] ,
                                        ['Egg Groups', <ol className="list-disc">{user.egg_groups.map(i => <li>{capitalizeWord(i.name)}</li> )}</ol>],
                                        ['Egg Cycles', `${user.hatch_counter} cycles (${(user.hatch_counter + 1) * 255} steps)`],
-                                       ['Habitat', capitalizeWord(user.habitat.name) ] ,
+                                       ['Habitat', (user.habitat != null ? capitalizeWord(user.habitat.name) : 'None') ] ,
                                         ]}/>
            </div>
          </div>
