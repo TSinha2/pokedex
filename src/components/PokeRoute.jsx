@@ -92,58 +92,58 @@ function formattedPokeType(type)
     switch(type)
     {
         case 'normal':
-            return <p className="bg-slate-400 rounded pl-1 pr-1 text-white">NORMAL</p>
+            return <p className="bg-slate-400 rounded px-1 py-1 text-white">NORMAL</p>
 
         case 'fire':
-            return <p className="bg-orange-500 rounded pl-1 pr-1 text-white">FIRE</p>
+            return <p className="bg-orange-500 rounded px-1 py-1 text-white flex">FIRE</p>
 
         case 'water':
-            return <p className="bg-blue-500 rounded pl-1 pr-1 text-white">WATER</p>
+            return <p className="bg-blue-500 rounded px-1 py-1 text-white">WATER</p>
             
         case 'electric':
-            return <p className="bg-yellow-500 rounded pl-1 pr-1 text-white">ELECTRIC</p>
+            return <p className="bg-yellow-500 rounded px-1 py-1 text-white">ELECTRIC</p>
 
         case 'grass':
-            return <p className="bg-green-500 rounded pl-1 pr-1 text-white">GRASS</p>
+            return <p className="bg-green-500 rounded px-1 py-1 text-white">GRASS</p>
 
         case 'ice':
-            return <p className="bg-cyan-400 rounded pl-1 pr-1 text-white">ICE</p>
+            return <p className="bg-cyan-400 rounded px-1 py-1 text-white">ICE</p>
 
         case 'fighting':
-            return <p className="bg-red-800 rounded pl-1 pr-1 text-white">FIGHTING</p>
+            return <p className="bg-red-800 rounded px-1 py-1 text-white">FIGHTING</p>
         
         case 'poison':
-            return <p className="bg-purple-500 rounded pl-1 pr-1 text-white">POISON</p>
+            return <p className="bg-purple-500 rounded px-1 py-1 text-white">POISON</p>
 
         case 'ground':
-            return <p className="bg-amber-500 rounded pl-1 pr-1 text-white">GROUND</p>
+            return <p className="bg-amber-500 rounded px-1 py-1 text-white">GROUND</p>
 
         case 'flying':
-            return <p className="bg-indigo-500 rounded pl-1 pr-1 text-white">FLYING</p>
+            return <p className="bg-indigo-500 rounded px-1 py-1 text-white">FLYING</p>
 
         case 'psychic':
-            return <p className="bg-pink-500 rounded pl-1 pr-1 text-white">PSYCHIC</p>
+            return <p className="bg-pink-500 rounded px-1 py-1 py-1 text-white">PSYCHIC</p>
 
         case 'bug':
-            return <p className="bg-lime-500 rounded pl-1 pr-1 text-white">BUG</p>
+            return <p className="bg-lime-500 rounded px-1 py-1 text-white">BUG</p>
 
         case 'rock':
-            return <p className="bg-yellow-700 rounded pl-1 pr-1 text-white">ROCK</p>
+            return <p className="bg-yellow-700 rounded px-1 py-1 text-white">ROCK</p>
                 
         case 'ghost':
-            return <p className="bg-indigo-800 rounded pl-1 pr-1 text-white">GHOST</p>
+            return <p className="bg-indigo-800 rounded px-1 py-1 text-white">GHOST</p>
 
         case 'dragon':
-            return <p className="bg-indigo-600 rounded pl-1 pr-1 text-white">DRAGON</p>
+            return <p className="bg-indigo-600 rounded px-1 py-1 text-white">DRAGON</p>
 
         case 'dark':
-            return <p className="bg-amber-900 rounded pl-1 pr-1 text-white">DARK</p>
+            return <p className="bg-amber-900 rounded px-1 py-1 text-white">DARK</p>
 
         case 'steel':
-            return <p className="bg-neutral-500 rounded pl-1 pr-1 text-white">STEEL</p>
+            return <p className="bg-neutral-500 rounded px-1 py-1 text-white">STEEL</p>
 
         case 'fairy':
-            return <p className="bg-fuchsia-400	 rounded pl-1 pr-1 text-white">FAIRY</p>
+            return <p className="bg-fuchsia-400	 rounded px-1 py-1 text-white">FAIRY</p>
                     
     }
 
@@ -195,26 +195,29 @@ export default function PokeRoute()
     return (
       <SWRConfig value={{ provider: localStorageProvider }}>
          <Navbar/> 
-         <div className="flex flex-col items-center	gap-2">
-           <img
-              className="mt-6 w-80 h-80"
-              src={data.sprites.other.dream_world.front_default ? data.sprites.other.dream_world.front_default: data.sprites.front_default}
-              /> 
-                    <div className="flex gap-2 ml-2">
-                        {data.types.map(i => formattedPokeType(i.type.name))}
-                    </div>
+         <div className="grid  md:grid-cols-2 gap-2">
+             <img
+                className="mt-6 w-96 h-96	md:col-start-2	justify-self-center self-center"
+                src={data.sprites.other.dream_world.front_default ? data.sprites.other.dream_world.front_default: data.sprites.front_default}
+                />
+                    <div className="md:col-start-1 md:row-start-1 md:my-4 md:ml-4">
+                      
+                                         <h1 className="text-6xl capitalize text-center">{data.name}</h1>
+                                         <div className="flex gap-2 ml-2 justify-center	">
+                          {data.types.map(i => formattedPokeType(i.type.name))}
+                      </div>
 
-                   <h1 className="text-5xl capitalize">{data.name}</h1>
-                   <h1 className="text-xl text-center">{!miscLoading ? user.flavor_text_entries[0].flavor_text: ''}</h1>
-                   {/* <h1 className="text-2xl">{data.abilities.map(i => i.ability.name) }</h1> */}
-                   <DataTable data={[['Pokédex №',  `#${data.id}`],
-                                     ['Introduced', `${!miscLoading ? capitalizeWord(user.generation.name.split('-')[0]) + ' ' +  user.generation.name.split('-')[1].toUpperCase(): ''}`],
-                                     ['Weight', `${data.weight / 10}kg (${((data.weight / 10) * 2.2).toFixed(1)} lbs)`] , 
-                                     ['Height', `${data.height / 10}m (${((data.height / 10) * 3.281).toFixed(1)} ft)`],
-                                     ['Color', `${!miscLoading ? capitalizeWord(user.color.name): ''}`],
-                                     ['Shape', `${user.shape ? capitalizeWord(user.shape.name): ''}`],
-                                     ['Abilities', AbilitiesProcess(abilities)]
-                                      ]}/>
+                                         <h1 className="text-xl text-center">{!miscLoading ? user.flavor_text_entries[0].flavor_text: ''}</h1>
+                                         {/* <h1 className="text-2xl">{data.abilities.map(i => i.ability.name) }</h1> */}
+                                         <DataTable data={[['Pokédex №',  `#${data.id}`],
+                                       ['Introduced', `${!miscLoading ? capitalizeWord(user.generation.name.split('-')[0]) + ' ' +  user.generation.name.split('-')[1].toUpperCase(): ''}`],
+                                       ['Weight', `${data.weight / 10}kg (${((data.weight / 10) * 2.2).toFixed(1)} lbs)`] ,
+                                       ['Height', `${data.height / 10}m (${((data.height / 10) * 3.281).toFixed(1)} ft)`],
+                                       ['Color', `${!miscLoading ? capitalizeWord(user.color.name): ''}`],
+                                       ['Shape', `${user.shape ? capitalizeWord(user.shape.name): ''}`],
+                                       ['Abilities', AbilitiesProcess(abilities)]
+                                        ]}/>
+                    </div>
 
          </div>
          <hr className="border-2 border-black"/>
