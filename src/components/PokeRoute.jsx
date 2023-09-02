@@ -73,12 +73,12 @@ function AbilitiesProcess(abilitiesList)
 function DataTable(props)
 {
   return(
-    <table className="width-screen ">
+    <table>
       <tbody>
         {props.data.map(
           i => <tr className="border first:border-t-0 last:border-b-0 border-x-0 ">
-            <th key={i[0]} className="text-xl px-12 pb-4 text-left">{i[0]}</th>
-            <td key={i[1]} className="text-xl px-12 pb-4">{i[1]}</td>
+            <th key={i[0]} className=" text-base px-2 sm:px-4 md:px-6 lg:px-8 pb-4 text-left">{i[0]}</th>
+            <td key={i[1]} className="text-base px-2 sm:px-4 md:px-6 lg:px-8 pb-4">{i[1]}</td>
           </tr>
         )}
       </tbody>
@@ -170,8 +170,8 @@ function StatsTable(props)
           <tbody>
             {props.stats.map(
               i => <tr className="border first:border-t-0 last:border-b-0 border-x-0 ">
-                <th className="text-xl px-12 pb-4 capitalize text-left">{i.stat.name.split('-').join(' ')}</th>
-                <td className="text-xl px-12 pb-4">{i.base_stat}</td>
+                <th className="text-base px-2 sm:px-4 md:px-6 lg:px-8 pb-4 capitalize text-left">{i.stat.name.split('-').join(' ')}</th>
+                <td className="text-base px-2 sm:px-4 md:px-6 lg:px-8 pb-4 ">{i.base_stat}</td>
               </tr>
             )}
           </tbody>
